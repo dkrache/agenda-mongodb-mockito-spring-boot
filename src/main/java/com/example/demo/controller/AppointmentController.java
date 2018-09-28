@@ -1,11 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Appointment;
+import com.example.demo.model.MessageError;
 import com.example.demo.services.AppointmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,9 +39,13 @@ public class AppointmentController {
     }
 
     @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Appointment createAppointment(@RequestBody Appointment appointment){
+    public ResponseEntity<Object> createAppointment(@RequestBody Appointment appointment){
         LOGGER.info("Create appointment : {}", appointment);
-        return appointmentService.addAppointment(appointment);
+        Appointment a = appointmentService.addAppointment(appointment);
+        if(a==null){
+            return new ResponseEntity<>(new MessageError("Appointment exist during this interval"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(a, HttpStatus.OK);
     }
 
     @PostMapping(value = "/collision", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

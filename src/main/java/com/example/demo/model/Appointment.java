@@ -11,16 +11,22 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(of = {"id"})
 @ToString
 @Document
 public class Appointment {
     @Id
     private String id;
+
     private String doctor;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime begin;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime end;
+
     private String title;
+
     private String description;
 }

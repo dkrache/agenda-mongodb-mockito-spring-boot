@@ -14,6 +14,6 @@ public interface AppointmentRepository extends MongoRepository<Appointment, Stri
     @Query(value = "{'doctor':?0, $or :[ " +
             "{'begin' : { $lt : ?1 }, 'end' : { $gt:?1} }, " +
             "{'begin' : { $lt : ?2 }, 'end' : { $gt:?2} }, " +
-            "{'begin' : { $gt : ?1 }, 'end' : { $lt:?2} } ]}")
+            "{'begin' : { $gte : ?1 }, 'end' : { $lte:?2} } ]}")
     List<Appointment> findByQueryWithExpression(String doctor, LocalDateTime begin, LocalDateTime end);
 }

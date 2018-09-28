@@ -20,7 +20,10 @@ public class AppointmentService {
     }
 
     public Appointment addAppointment(Appointment appointment) {
-        return appointmentRepository.save(appointment);
+        if(this.getCollision(appointment).isEmpty()){
+            return appointmentRepository.save(appointment);
+        }
+        return null;
     }
 
     public List<Appointment> getCollision(Appointment appointment) {
