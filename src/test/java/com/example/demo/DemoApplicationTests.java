@@ -1,6 +1,8 @@
 package com.example.demo;
 
 import com.example.demo.controller.AppointmentController;
+import com.example.demo.middleware.ActionService;
+import com.example.demo.middleware.ServerToMock;
 import com.example.demo.model.Appointment;
 import com.example.demo.model.MessageError;
 import com.example.demo.repository.AppointmentRepository;
@@ -11,6 +13,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +30,7 @@ import org.exparity.hamcrest.date.LocalDateMatchers;
 import static org.hamcrest.MatcherAssert.*;
 
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(SpringRunner.class)
@@ -112,5 +116,16 @@ public class DemoApplicationTests {
 
 	}
 
+	@Test
+	public void testUsingMockito() {
+		ServerToMock serverToMock = Mockito.mock(ServerToMock.class);
+		ActionService actionService = new ActionService(serverToMock);
+		when(serverToMock.result()).thenReturn(true);
+		assertThat(actionService.test(5,5), is(10));
+
+		when(serverToMock.result()).thenReturn(false);
+		assertThat(actionService.test(5,5), is(25));
+
+	}
 
 }
